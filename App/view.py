@@ -59,9 +59,9 @@ def menuDep():
 
 catalog = None
 
-def initCatalog(tipo):
+def initCatalog():
 
-    return controller.initCatalog(tipo)
+    return controller.initCatalog()
 
 
 def loadArtists(catalog):
@@ -109,7 +109,7 @@ while True:
 
     if int(inputs[0]) == 0:
 
-        catalog = initCatalog("ARRAY_LIST")  
+        catalog = initCatalog()  
 
         loadArtists(catalog)
         loadArtworks(catalog)

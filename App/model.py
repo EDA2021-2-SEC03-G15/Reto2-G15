@@ -30,7 +30,8 @@ import config as cf
 from datetime import date
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as mg
-from DISClib.Algorithms.Sorting import shellsort as sh
+from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
 assert cf
 import math
 
@@ -40,16 +41,25 @@ los mismos.
 """
 
 # Construccion de modelos
-
-def newCatalog(tipo):
+def newCatalog():
 
     catalog = {"artists":None, 
                "artworks": None,
-               }
-    
-    catalog["artists"] = lt.newList(tipo)
+               "Medium": None}
 
-    catalog["artworks"] = lt.newList(tipo)
+
+    catalog["artists"] = lt.newList("ARRAY_LIST")
+
+    catalog["artworks"] = lt.newList("ARRAY_LIST")
+
+    """
+    Este indice crea un map cuya llave es el autor del libro
+    """
+    catalog["Medium"] = mp.newMap(800,
+                                   maptype='CHAINING',
+                                   loadfactor=4.0,
+                                   comparefunction=compareMedium)
+   
 
     return catalog
 
@@ -60,8 +70,57 @@ def addArtist(catalog, artist):
     lt.addLast(catalog["artists"], artist)
 
 def addArtwork(catalog, artwork):
-
+    # Se adiciona la obra de arte a la lista de obras de arte
     lt.addLast(catalog["artworks"], artwork)
+
+
+# ==============================
+# Funciones de Comparacion
+# ==============================
+def compareBeginDate(artist1, artist2):
+    
+    return (int(artist1["BeginDate"]) < int(artist2["BeginDate"]))
+
+
+def compareAlphabetically(artwork1, artwork2):
+
+    return (str(artwork1["Title"]) < str(artwork2["Title"]))
+
+
+def comparebyConsID(art1, art2):
+
+    return (str(art1["ConstituentID"]) < str(art2["CostituentID"]))
+
+
+def compareBeginDate(artist1, artist2):
+    
+    return (int(artist1["BeginDate"]) < int(artist2["BeginDate"]))
+
+
+def compareByCosts(art1,art2):
+
+    return (int(art1["Cost"])>int(art2["Cost"]))
+
+
+def compareMedium(artwork1, artwork2):
+
+    return (str(artwork1["Medium"]) < str(artwork2["Medium"]))
+
+
+def cmpArtWorkByDateAcquired(artwork1, artwork2):
+
+    fecha1 = artwork1['DateAcquired']
+    fecha2 = artwork2['DateAcquired']
+
+    if fecha1 == "":
+        fecha1 = '1700-01-01'
+    if fecha2 == "": 
+        fecha2 = '1700-01-01'
+
+    dt1 = date.fromisoformat(fecha1)
+    dt2 = date.fromisoformat(fecha2)
+
+    return (dt1 < dt2)
 
 
 def FindIDArtist(catalog, nombre):
@@ -125,48 +184,6 @@ def obras_tecnicaUsada(obrasArtista, obramayor):
     long = len(obrasTecnica)
 
     return obrasTecnica, long
-
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-def compareBeginDate(artist1, artist2):
-    
-    return (int(artist1["BeginDate"]) < int(artist2["BeginDate"]))
-
-
-def compareAlphabetically(artwork1, artwork2):
-
-    return (str(artwork1["Title"]) < str(artwork2["Title"]))
-
-
-def comparebyConsID(art1, art2):
-
-    return (str(art1["ConstituentID"]) < str(art2["CostituentID"]))
-
-
-def compareBeginDate(artist1, artist2):
-    
-    return (int(artist1["BeginDate"]) < int(artist2["BeginDate"]))
-
-
-def compareByCosts(art1,art2):
-
-    return (int(art1["Cost"])>int(art2["Cost"]))
-
-
-def cmpArtWorkByDateAcquired(artwork1, artwork2):
-
-    fecha1 = artwork1['DateAcquired']
-    fecha2 = artwork2['DateAcquired']
-
-    if fecha1 == "":
-        fecha1 = '1700-01-01'
-    if fecha2 == "": 
-        fecha2 = '1700-01-01'
-
-    dt1 = date.fromisoformat(fecha1)
-    dt2 = date.fromisoformat(fecha2)
-
-    return (dt1<dt2)
 
    
 def listarArtistas(catalog, inicio, fin):
