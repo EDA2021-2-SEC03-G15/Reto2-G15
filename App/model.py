@@ -382,5 +382,5 @@ def tecnica_mas_antigua(catalog, medio):
     
     sorted = mg.sort(listaFinal, cmpArtworkbyYear)
 
-    return(sorted)
+    return(sorted["elements"])
 
