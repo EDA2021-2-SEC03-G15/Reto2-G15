@@ -92,7 +92,7 @@ def compareAlphabetically(artwork1, artwork2):
 
 def comparebyConsID(art1, art2):
 
-    return (str(art1["ConstituentID"]) < str(art2["ConstituentID"]))
+    return (str(art1["ConstituentID"]) < str(art2["CostituentID"]))
 
 
 def compareBeginDate(artist1, artist2):
