@@ -62,10 +62,12 @@ def loadArtworks(catalog):
     """
     Carga las obras del archivo.
     """
+
     artworksfiles = cf.data_dir + "Artworks-utf8-small.csv"
     input_file = csv.DictReader(open(artworksfiles, encoding="utf-8"))
     for artwork in input_file:
         model.addArtwork(catalog, artwork)
+
 
 
 
@@ -90,6 +92,10 @@ def sortArtworksByCID(catalog, nombre):
 def sortbyNationality(catalog):
         
     return model.sortByNacionality(catalog)
+
+def tecnica_mas_antigua(catalog, medio):
+
+    return model.tecnica_mas_antigua(catalog, medio)
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.

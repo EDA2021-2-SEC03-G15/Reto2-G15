@@ -45,7 +45,7 @@ def newCatalog():
 
     catalog = {"artists":None, 
                "artworks": None,
-               "Medium": None}
+               "medium": None}
 
 
     catalog["artists"] = lt.newList("ARRAY_LIST")
@@ -53,11 +53,11 @@ def newCatalog():
     catalog["artworks"] = lt.newList("ARRAY_LIST")
 
     """
-    Este indice crea un map cuya llave es el autor del libro
+    Este indice crea un map cuya llave es la técnica
     """
-    catalog["Medium"] = mp.newMap(800,
-                                   maptype='CHAINING',
-                                   loadfactor=4.0,
+    catalog["medium"] = mp.newMap(800,
+                                   maptype='PROBING',
+                                   loadfactor=0.5,
                                    comparefunction=compareMedium)
    
 
@@ -72,6 +72,9 @@ def addArtist(catalog, artist):
 def addArtwork(catalog, artwork):
     # Se adiciona la obra de arte a la lista de obras de arte
     lt.addLast(catalog["artworks"], artwork)
+    mp.put(catalog["medium"], artwork["Medium"], artwork)
+ 
+
 
 
 # ==============================
@@ -89,7 +92,7 @@ def compareAlphabetically(artwork1, artwork2):
 
 def comparebyConsID(art1, art2):
 
-    return (str(art1["ConstituentID"]) < str(art2["CostituentID"]))
+    return (str(art1["ConstituentID"]) < str(art2["ConstituentID"]))
 
 
 def compareBeginDate(artist1, artist2):
@@ -103,8 +106,8 @@ def compareByCosts(art1,art2):
 
 
 def compareMedium(artwork1, artwork2):
-
-    return (str(artwork1["Medium"]) < str(artwork2["Medium"]))
+    
+       return (str(artwork1) < str(artwork2))
 
 
 def cmpArtWorkByDateAcquired(artwork1, artwork2):
@@ -122,6 +125,8 @@ def cmpArtWorkByDateAcquired(artwork1, artwork2):
 
     return (dt1 < dt2)
 
+def cmpArtworkbyYear (artw1,artw2):
+    return artw1["Date"]<artw2["Date"]
 
 def FindIDArtist(catalog, nombre):
     
@@ -359,3 +364,23 @@ def transportRules(catalog, department):
     sorted = mg.sort(listawCosts, compareByCosts)
 
     return sorted, costo_total, total_obras
+
+def tecnica_mas_antigua(catalog, medio):
+
+    listaTecnicas = mp.keySet(catalog["medium"])
+    listaArtworks = mp.valueSet(catalog["medium"])
+    listaFinal = lt.newList("ARRAY_LIST")
+
+    i = 0
+
+    while i<=mp.size(catalog["medium"]):
+
+        if lt.getElement(listaTecnicas, i) == medio:
+            artw = lt.getElement(listaArtworks, i)
+            lt.addLast(listaFinal, artw)
+        i+=1
+    
+    sorted = mg.sort(listaFinal, cmpArtworkbyYear)
+
+    return(sorted)
+

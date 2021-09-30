@@ -25,6 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
+from DISClib.ADT import map as mp
 
 
 """
@@ -98,6 +99,10 @@ def transportCost(catalog, department):
     
     return controller.transportCost(catalog, department)
 
+def tecnica_mas_antigua(catalog, medio):
+
+     return controller.tecnica_mas_antigua(catalog, medio)
+
 """
 Menu principal
 """
@@ -116,18 +121,20 @@ while True:
          
         print("Artistas Cargados " + str(lt.size(catalog["artists"])))
         print("Artworks cargados " + str(lt.size(catalog["artworks"])))
+
+        print(mp.keySet(catalog["medium"]))
+#       
+ #       print("Últimos 3 Artistas")
+  #      i = 2
+   #     while i >= 0:
+   #         print (str(lt.getElement((catalog["artists"]), lt.size(catalog["artists"])-i)))
+    #        i-=1
         
-        print("Últimos 3 Artistas")
-        i = 2
-        while i >= 0:
-            print (str(lt.getElement((catalog["artists"]), lt.size(catalog["artists"])-i)))
-            i-=1
-        
-        print("Ultimos 3 Artworks")
-        j = 2
-        while j >= 0:
-            print (str(lt.getElement((catalog["artworks"]),lt.size(catalog["artworks"])-j)))
-            j-=1
+     #   print("Ultimos 3 Artworks")
+      #  j = 2
+       # while j >= 0:
+        #    print (str(lt.getElement((catalog["artworks"]),lt.size(catalog["artworks"])-j)))
+         #   j-=1
   
 
     elif int(inputs[0]) == 1:
@@ -235,8 +242,13 @@ while True:
                 print("--------------------------------------------------------")
                 print (lt.getElement(sorted, i))
 
-    else:
-        sys.exit(0)
+    elif int(inputs[0]) == 6:
 
+        tecnica = str(input("Ingrese la tecnica:"))
+        print(tecnica_mas_antigua(catalog, tecnica))
+
+    else:
+
+        sys.exit(0)
 sys.exit(0)
 0
