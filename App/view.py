@@ -121,7 +121,6 @@ while True:
          
         print("Artistas Cargados " + str(lt.size(catalog["artists"])))
         print("Artworks cargados " + str(lt.size(catalog["artworks"])))
-
 #       
  #       print("Últimos 3 Artistas")
   #      i = 2
