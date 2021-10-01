@@ -142,7 +142,6 @@ while True:
         date1 = int(input("Año inicial: " ))
         date2 = int(input("Año final: " ))
         lista = listarArtistas(catalog, date1, date2)
-
         print("Hay ", lt.size(lista), "artistas en el rango de ", date1, "y ", date2)
         print("================================================================")
         print("Los primeros 3 y ultimos 3 artistas del rango son:")

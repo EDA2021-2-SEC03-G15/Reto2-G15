@@ -45,7 +45,8 @@ def newCatalog():
 
     catalog = {"artists":None, 
                "artworks": None,
-               "medium": None}
+               "medium": None,
+               "nationality": None}
 
 
     catalog["artists"] = lt.newList("ARRAY_LIST")
@@ -59,7 +60,10 @@ def newCatalog():
                                    maptype='PROBING',
                                    loadfactor=0.5,
                                    comparefunction=compareMedium)
-   
+    catalog["nationality"] = mp.newMap(200,
+                                   maptype='PROBING',
+                                   loadfactor=0.5,
+                                   comparefunction=compareNationality)
 
     return catalog
 
@@ -68,7 +72,8 @@ def addArtist(catalog, artist):
 
     # Se adiciona el artista a la lista de artistas
     lt.addLast(catalog["artists"], artist)
-
+    mp.put(catalog["nationality"], artist["Nationality"], artist)
+    
 def addArtwork(catalog, artwork):
     # Se adiciona la obra de arte a la lista de obras de arte
     lt.addLast(catalog["artworks"], artwork)
@@ -110,6 +115,11 @@ def compareMedium(artwork1, artwork2):
        return (str(artwork1) < str(artwork2))
 
 
+def compareNationality(artwork1, artwork2):
+    
+       return (str(artwork1) < str(artwork2))
+
+
 def cmpArtWorkByDateAcquired(artwork1, artwork2):
 
     fecha1 = artwork1['DateAcquired']
@@ -125,8 +135,10 @@ def cmpArtWorkByDateAcquired(artwork1, artwork2):
 
     return (dt1 < dt2)
 
+
 def cmpArtworkbyYear (artw1,artw2):
     return artw1["Date"]<artw2["Date"]
+
 
 def FindIDArtist(catalog, nombre):
     
