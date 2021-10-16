@@ -44,7 +44,7 @@ def printMenu():
     print("3- Clasificar obras de un artista por técnica")
     print("4- Clasificar obras de un artista por nacionalidad")
     print("5- Transportar obras")
-    print("6- Proponer exposicion")
+    print("6- Buscar obras por Nacionalidad")
     print("7- Salir")
 
 
@@ -241,8 +241,7 @@ while True:
 
     elif int(inputs[0]) == 6:
 
-        tecnica = str(input("Ingrese la tecnica:"))
-        print(tecnica_mas_antigua(catalog, tecnica))
+        tecnica = str(input("Ingrese la nacionalidad:"))
 
     else:
 
