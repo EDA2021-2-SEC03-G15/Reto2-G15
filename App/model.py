@@ -46,7 +46,8 @@ def newCatalog():
     catalog = {"artists":None, 
                "artworks": None,
                "medium": None,
-               "nationality": None}
+               "nationality": None,
+               "constituentID": None}
 
 
     catalog["artists"] = lt.newList("ARRAY_LIST")
@@ -56,6 +57,10 @@ def newCatalog():
     """
     Este indice crea un map cuya llave es la técnica
     """
+    catalog["artists"] = mp.newMap(800,
+                                   maptype='PROBING',
+                                   loadfactor=0.5,
+                                   comparefunction=None)
     catalog["medium"] = mp.newMap(800,
                                    maptype='PROBING',
                                    loadfactor=0.5,
@@ -64,10 +69,10 @@ def newCatalog():
                                    maptype='PROBING',
                                    loadfactor=0.5,
                                    comparefunction=compareNationality)
-    catalog["constituentID"] = mp.newMap(800,
+    catalog["constituentID"] = mp.newMap(2000,
                                    maptype='PROBING',
-                                   loadfactor=0.5,
-                                   comparefunction=compareNationality)
+                                   loadfactor=1.00,
+                                   comparefunction=None)
 
     return catalog
 
@@ -76,26 +81,13 @@ def addArtist(catalog, artist):
 
     # Se adiciona el artista a la lista de artistas
     lt.addLast(catalog["artists"], artist)
+    mp.put(catalog["nationality"], artist["Nationality"], artist)
+    mp.put(catalog["constituentID"], artist["ConstituentID"], artist["DisplayName"])
 
-def mapNationality(catalog, artist):
-
-    mp.put(catalog["constituentID"], artist["ConstituentID"], artist)
-    mp.put(catalog["nationality"], artist["ConstituentID"], artist)
-
-    InfoArtista = mp.newMap(800,
-                            maptype='PROBING',
-                            loadfactor=0.5,
-                            comparefunction=compareNationality)
-    mp.put(InfoArtista, catalog["ConstituentID"],)
-
-
-    
 def addArtwork(catalog, artwork):
     # Se adiciona la obra de arte a la lista de obras de arte
     lt.addLast(catalog["artworks"], artwork)
     mp.put(catalog["medium"], artwork["Medium"], artwork)
- 
-
 
 
 # ==============================
@@ -111,9 +103,9 @@ def compareAlphabetically(artwork1, artwork2):
     return (str(artwork1["Title"]) < str(artwork2["Title"]))
 
 
-def comparebyConsID(art1, art2):
-
-    return (str(art1["ConstituentID"]) < str(art2["CostituentID"]))
+def comparebyConsID(artist1, artist2):
+    
+    return (int(artist1["ConstituentID"]) < int(artist2["CostituentID"]))
 
 
 def compareBeginDate(artist1, artist2):
