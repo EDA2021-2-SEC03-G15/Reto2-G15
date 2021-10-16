@@ -64,6 +64,10 @@ def newCatalog():
                                    maptype='PROBING',
                                    loadfactor=0.5,
                                    comparefunction=compareNationality)
+    catalog["constituentID"] = mp.newMap(800,
+                                   maptype='PROBING',
+                                   loadfactor=0.5,
+                                   comparefunction=compareNationality)
 
     return catalog
 
@@ -72,7 +76,19 @@ def addArtist(catalog, artist):
 
     # Se adiciona el artista a la lista de artistas
     lt.addLast(catalog["artists"], artist)
-    mp.put(catalog["nationality"], artist["Nationality"], artist)
+
+def mapNationality(catalog, artist):
+
+    mp.put(catalog["constituentID"], artist["ConstituentID"], artist)
+    mp.put(catalog["nationality"], artist["ConstituentID"], artist)
+
+    InfoArtista = mp.newMap(800,
+                            maptype='PROBING',
+                            loadfactor=0.5,
+                            comparefunction=compareNationality)
+    mp.put(InfoArtista, catalog["ConstituentID"],)
+
+
     
 def addArtwork(catalog, artwork):
     # Se adiciona la obra de arte a la lista de obras de arte
