@@ -127,7 +127,21 @@ def ordenarArtworksReq2(catalog, fechainicial, fechafinal):
 
     tamaño = lt.size(listafinal)
 
-    return (listafinal["elements"], tamaño)
+    resultado = lt.newList("ARRAY_LIST")
+
+    for j in range (1, lt.size(listafinal)):
+
+        a = lt.getElement(listafinal, j)
+
+        if (j<=3):
+
+            lt.addLast(resultado, a)
+        
+        if (j>=(lt.size(listafinal)-3)):
+
+            lt.addLast(resultado, a)
+
+    return (resultado["elements"], tamaño)
 
 ###############################################################################################
 
