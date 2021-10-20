@@ -4,6 +4,7 @@ from datetime import date
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as mg
 from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapstructure as mpa
 from DISClib.DataStructures import mapentry as me
 assert cf
 import csv
@@ -39,13 +40,14 @@ def newCatalog():
                                 loadfactor=0.5,
                                 comparefunction=None)
 
-    catalog["nationality"] = mp.newMap(2000,
+    catalog["nationality"] = mp.newMap(200,
                                 maptype='PROBING',
                                 loadfactor=0.5,
                                 comparefunction=None)
 
     catalog["constituentid"] = mp.newMap(800,
-                            maptype='PROBING',
+                            prime=13,
+                            maptype='CHAINING',
                             loadfactor=0.5,
                             comparefunction=None)
 
@@ -60,6 +62,7 @@ def addArtwork(catalog, artwork):
 
     lt.addLast(catalog["artworks"], artwork)
     mp.put(catalog["dateacquired"], artwork["DateAcquired"],artwork)
+    mp.put(catalog["constituentid"], artwork["ConstituentID"][1:-1], artwork)
 
 #########################     Load Functions     ##########################################
 
@@ -143,6 +146,22 @@ def ordenarArtworksReq2(catalog, fechainicial, fechafinal):
 
     return (resultado["elements"], tamaño)
 
+def clasificarArtworksArtistaPorTecnica(catalog, nombre):
+
+    obrasArtista = lt.newList("ARRAY_LIST")
+    Id_Artista = FindIDArtist(catalog, nombre)
+    obras = mp.get(catalog["constituentid"], Id_Artista)
+    obras = me.getValue(obras)
+    lt.addLast(obrasArtista, obras)
+
+
+
+    cantidad_obras = lt.size(obrasArtista)
+    tecnicas = contar_tecnicas(obrasArtista)
+    tecnicaMasUsada = tecnica_mas_usada(obrasArtista)
+    obras_tecnicaUsada, longitud = obrasTecnicaMasUsada(obrasArtista, tecnicaMasUsada)
+    return(cantidad_obras, tecnicas, tecnicaMasUsada, longitud, obras_tecnicaUsada)
+
 ###############################################################################################
 
 def compareBeginDate(artist1, artist2):
@@ -163,3 +182,60 @@ def cmpArtWorkByDateAcquired(artwork1, artwork2):
     dt2 = date.fromisoformat(fecha2)
 
     return (dt1 < dt2)
+
+def FindIDArtist(catalog, nombre):
+        
+    artistas = catalog["artists"]
+    c = False
+    while c == False:
+        for i in range(lt.size(artistas)):
+            x = lt.getElement(artistas, i)
+            if x['DisplayName'] == nombre:
+                IDArtista = x['ConstituentID']
+                c = True
+    
+    return IDArtista
+
+def contar_tecnicas(obrasArtista):
+
+    tecnicas = lt.newList("ARRAY_LIST")
+    for i in range(lt.size(obrasArtista)):
+        artwork = lt.getElement(obrasArtista, i)
+        if lt.isPresent(tecnicas, artwork["Medium"]) == 0:
+            lt.addLast(tecnicas, artwork["Medium"])
+    tecnicas = lt.size(tecnicas)
+
+    return tecnicas
+
+def tecnica_mas_usada(obrasArtista):
+
+    obras = obrasArtista["elements"]
+    dic = {}
+    for obra in range(len(obras)):
+
+        iguales = 0
+        for obra1 in range(len(obras)):
+            if obras[obra]["Medium"] == obras[obra1]["Medium"]:
+                iguales += 1   
+        dic[obras[obra]["Medium"]] = iguales
+    mayor = 0 
+    tecnicaMasUsada = ""    
+    for llave in dic:
+        if dic[llave] > mayor:
+           mayor = dic[llave]
+           tecnicaMasUsada = llave
+
+    return tecnicaMasUsada
+
+def obrasTecnicaMasUsada(obrasArtista, obramayor):
+
+    obrasA = obrasArtista["elements"]
+    obras = lt.newList(datastructure='ARRAY_LIST')
+
+    for i in range(len(obrasA)):
+        if obrasA[i]["Medium"] == obramayor:
+            lt.addLast(obras, obrasA[i])
+    obrasTecnica = obras["elements"]
+    longitud = len(obrasTecnica)
+
+    return obrasTecnica, longitud
