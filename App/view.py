@@ -110,5 +110,6 @@ while True:
         for artwork in (ordenarArtworksReq2(catalog, inicio, final))[0]:
 
             print(artwork)
+            print("========================================================")
 
 sys.exit(0)
