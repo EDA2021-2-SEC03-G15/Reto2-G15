@@ -46,7 +46,6 @@ def newCatalog():
                                 comparefunction=None)
 
     catalog["constituentid"] = mp.newMap(800,
-                            prime=13,
                             maptype='CHAINING',
                             loadfactor=0.5,
                             comparefunction=None)
@@ -147,12 +146,17 @@ def ordenarArtworksReq2(catalog, fechainicial, fechafinal):
     return (resultado["elements"], tamaño)
 
 def clasificarArtworksArtistaPorTecnica(catalog, nombre):
+    i = 1
 
     obrasArtista = lt.newList("ARRAY_LIST")
     Id_Artista = FindIDArtist(catalog, nombre)
+    for i in catalog["constituentid"]["table"]["elements"]:
+        if i["key"] == Id_Artista:
+            lt.addLast(obrasArtista, i["value"])
+
     obras = mp.get(catalog["constituentid"], Id_Artista)
     obras = me.getValue(obras)
-    lt.addLast(obrasArtista, obras)
+    
 
 
 
