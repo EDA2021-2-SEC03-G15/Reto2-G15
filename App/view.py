@@ -72,6 +72,10 @@ def ordenarArtworksReq2(catalog, inicio, fin):
 
     return controller.ordenarArtworksReq2(catalog, inicio, fin)
 
+def clasificarObrasNacionalidadReq4(catalog):
+
+    return controller.clasificarObrasNacionalidadReq4(catalog)
+
 ###########################    Menu inputs and outputs   ######################################
 
 while True:
@@ -111,5 +115,10 @@ while True:
 
             print(artwork)
             print("========================================================")
+    
+    elif int(inputs[0]) == 4:
+
+        clasificarObrasNacionalidadReq4(catalog)
+        
 
 sys.exit(0)

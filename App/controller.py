@@ -22,3 +22,7 @@ def ordenarArtistasReq1(catalog, inicio, fin):
 def ordenarArtworksReq2(catalog, inicio, fin):
 
     return model.ordenarArtworksReq2(catalog, inicio, fin)
+
+def clasificarObrasNacionalidadReq4(catalog):
+
+    return model.clasificarObrasNacionalidadReq4(catalog)

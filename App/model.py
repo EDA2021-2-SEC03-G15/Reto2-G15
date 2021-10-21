@@ -39,15 +39,21 @@ def newCatalog():
                                 loadfactor=0.5,
                                 comparefunction=None)
 
-    catalog["nationality"] = mp.newMap(2000,
+    catalog["nationality"] = mp.newMap(100,
                                 maptype='PROBING',
                                 loadfactor=0.5,
                                 comparefunction=None)
+
+    catalog["objectid"] = mp.newMap(800,
+                            maptype='PROBING',
+                            loadfactor=0.5,
+                            comparefunction=None)
 
     catalog["constituentid"] = mp.newMap(800,
                             maptype='PROBING',
                             loadfactor=0.5,
                             comparefunction=None)
+
 
     return catalog
 
@@ -55,11 +61,15 @@ def addArtist(catalog, artist):
 
     lt.addLast(catalog["artists"], artist)
     mp.put(catalog["begindate"], artist["BeginDate"], artist)
+    mp.put(catalog["nationality"], artist["Nationality"], artist)
+    mp.put(catalog["constituentid"], artist["ConstituentID"], artist)
 
 def addArtwork(catalog, artwork):
 
     lt.addLast(catalog["artworks"], artwork)
-    mp.put(catalog["dateacquired"], artwork["DateAcquired"],artwork)
+    mp.put(catalog["dateacquired"], artwork ["DateAcquired"],artwork)
+    mp.put(catalog["objectid"], artwork["ObjectID"], artwork)
+
 
 #########################     Load Functions     ##########################################
 
@@ -67,6 +77,7 @@ def loadArtworks(catalog):
 
     artworksfiles = cf.data_dir + "Artworks-utf8-small.csv"
     input_file = csv.DictReader(open(artworksfiles, encoding="utf-8"))
+    c=0
     for artwork in input_file:
         addArtwork(catalog, artwork)
 
@@ -76,6 +87,8 @@ def loadArtists(catalog):
     input_file = csv.DictReader(open(artistsfiles, encoding="utf-8"))
     for artist in input_file:
         addArtist(catalog, artist)
+
+
     
 ###############################    Requirements   #######################################
 
@@ -142,6 +155,36 @@ def ordenarArtworksReq2(catalog, fechainicial, fechafinal):
             lt.addLast(resultado, a)
 
     return (resultado["elements"], tamaño)
+
+def clasificarObrasNacionalidadReq4(catalog):
+
+    artistas = mp.valueSet(catalog["constituentid"])
+    consid = mp.keySet(catalog["constituentid"])
+    artw = mp.valueSet(catalog["objectid"])
+
+ 
+    infoArtistas = mp.newMap(800,
+                            maptype='PROBING',
+                            loadfactor=0.5,
+                            comparefunction=None)
+    i=0
+    while i<lt.size(artw):
+
+        cid1 = lt.getElement(artistas, i)["ConstituentID"]
+        ar = lt.getElement(artistas, i)
+        aw = lt.getElement(artw, i)
+        awsp = str(aw["ConstituentID"][1:-1])
+        if ',' in awsp:
+            for id in (awsp).split(','):
+                if cid1 in id.replace(" ", ""):
+                    mp.put(infoArtistas, cid1, aw)
+        if str(cid1[1:-1]) == str(aw["ConstituentID"][1:-1]):
+            mp.put(infoArtistas, cid1, aw)
+
+        i+=1
+
+    print(infoArtistas)
+        
 
 ###############################################################################################
 
