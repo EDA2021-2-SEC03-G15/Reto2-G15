@@ -75,6 +75,9 @@ def ordenarArtworksReq2(catalog, inicio, fin):
 def clasificarObrasNacionalidadReq4(catalog):
 
     return controller.clasificarObrasNacionalidadReq4(catalog)
+def clasificarArtworksArtistaPorTecnica(catalog, nombre):
+    
+    return controller.clasificarArtworksArtistaPorTecnica(catalog, nombre)
 
 ###########################    Menu inputs and outputs   ######################################
 
@@ -121,4 +124,25 @@ while True:
         clasificarObrasNacionalidadReq4(catalog)
         
 
+    elif int(inputs[0]) == 3:
+
+        nombre = input("Inserte el nombre del artista a consultar: " )
+        obras_Artista = clasificarArtworksArtistaPorTecnica(catalog, nombre)
+        cantidadObras, tecnicas, tecnica_mas_usada, longitud, obras_tecnicaUsada = obras_Artista
+        print("---------------------------------------------------------")
+        print("---------------------------------------------------------")
+        print("Informacion encontrada para al autor " + nombre)
+        print("Cantidad obras :", cantidadObras)
+        print("Tecnicas :", tecnicas)
+        print("Tecnica mas usada :", tecnica_mas_usada)
+        print("Obras con tecnica mas usada : " + str(longitud))
+        print("Primeras 5 obras con esa tecnica")
+        print("---------------------------------------------------------")
+        j = 0
+        for y in obras_tecnicaUsada:
+            x =  str(y["Title"] + " // " + y["Date"] + " // " + y["Medium"] + " // " + y['Dimensions'])
+            if j < 5:        
+                print(x)
+                print('---------------------------------------------------------')
+                j+=1
 sys.exit(0)
