@@ -40,11 +40,7 @@ def newCatalog():
                                 loadfactor=0.5,
                                 comparefunction=None)
 
-<<<<<<< HEAD
-    catalog["nationality"] = mp.newMap(100,
-=======
     catalog["nationality"] = mp.newMap(200,
->>>>>>> fe62dcd259a818b0427c5929d815cc87facbe7ff
                                 maptype='PROBING',
                                 loadfactor=0.5,
                                 comparefunction=None)
@@ -72,14 +68,9 @@ def addArtist(catalog, artist):
 def addArtwork(catalog, artwork):
 
     lt.addLast(catalog["artworks"], artwork)
-<<<<<<< HEAD
     mp.put(catalog["dateacquired"], artwork ["DateAcquired"],artwork)
     mp.put(catalog["objectid"], artwork["ObjectID"], artwork)
-
-=======
-    mp.put(catalog["dateacquired"], artwork["DateAcquired"],artwork)
     mp.put(catalog["constituentid"], artwork["ConstituentID"][1:-1], artwork)
->>>>>>> fe62dcd259a818b0427c5929d815cc87facbe7ff
 
 #########################     Load Functions     ##########################################
 
@@ -177,24 +168,7 @@ def clasificarObrasNacionalidadReq4(catalog):
                             maptype='PROBING',
                             loadfactor=0.5,
                             comparefunction=None)
-    i=0
-    while i<lt.size(artw):
-
-        cid1 = lt.getElement(artistas, i)["ConstituentID"]
-        ar = lt.getElement(artistas, i)
-        aw = lt.getElement(artw, i)
-        awsp = str(aw["ConstituentID"][1:-1])
-        if ',' in awsp:
-            for id in (awsp).split(','):
-                if cid1 in id.replace(" ", ""):
-                    mp.put(infoArtistas, cid1, aw)
-        if str(cid1[1:-1]) == str(aw["ConstituentID"][1:-1]):
-            mp.put(infoArtistas, cid1, aw)
-
-        i+=1
-
-    print(infoArtistas)
-        
+    
 def clasificarArtworksArtistaPorTecnica(catalog, nombre):
     i = 1
 
